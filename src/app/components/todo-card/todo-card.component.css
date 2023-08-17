@@ -1,0 +1,12 @@
+.red{
+    color: red;
+}
+.green{
+    color: green;
+}
+
+.user-icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

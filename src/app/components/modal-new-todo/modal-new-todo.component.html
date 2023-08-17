@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Todo Creator</h1>
+<div mat-dialog-content>
+  <ol>
+    <li>
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="data.title">
+      </mat-form-field>
+    </li>
+    <li>
+      <span>Assigned to:</span>
+      <button mat-raised-button (click)="openDialogAssign()">Select</button>
+    </li>
+    <li>
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </li>
+  </ol>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button [mat-dialog-close]="data">Ok</button>
+</div>

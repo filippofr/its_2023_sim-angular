@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'its_2023_sim-angular';
+  currentUser$ = this.authSrv.currentUser$;
+  
+  constructor(protected authSrv: AuthService) {  }
+
+  logout() {
+    this.authSrv.logout();
+  }
 }

@@ -3,14 +3,8 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, map, tap } from "rxjs"
 import { JwtService as JWTService } from "./jwt.service";
+import { User } from "../interfaces/user";
 
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  picture: string;
-}
 
 @Injectable({providedIn: 'root'})
 export class AuthService {

@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{todo.title}}</h5>
+    <div class="card-subtitle mb-2 text-muted">
+      Created by: 
+      <img class="user-icon" [src]="todo.createdBy.picture" alt="">
+      {{todo.createdBy.fullName}}
+    </div>
+    
+    <div class="card-subtitle mb-2 text-muted" *ngIf="todo!.assignedTo; else buttonAssign">
+      Assigned to: 
+      <img class="user-icon" [src]="todo.assignedTo.picture" alt="">
+      {{todo!.assignedTo!.fullName}}
+    </div>
+    <ng-template #buttonAssign>
+      <span>Assigned to: </span>
+      <button mat-raised-button (click)="openDialogAssign()">Select</button>
+    </ng-template>
+
+    <div class="card-text">Date: {{todo!.dueDate | date: 'dd/MM/yyyy HH:mm'}}</div>
+
+    <div class="card-text" 
+         [class.red]="todo.expired" 
+         *ngIf="todo!.expired; else statusTodo">
+      Expired: {{todo!.expired}}
+    </div>
+    <ng-template #statusTodo>
+      <div class="card-text" [class.green]="todo.completed">Completed: {{todo!.completed}}</div>
+      <mat-checkbox>Completed</mat-checkbox>
+    </ng-template>
+    
+  </div>
+</div>

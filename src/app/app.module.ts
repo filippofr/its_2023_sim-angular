@@ -1,35 +1,62 @@
-import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LoginComponent } from './components/pages/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
+import { NavUserComponent } from './components/nav-user/nav-user.component';
+import { TodosComponent } from './pages/todos/todos.component';
+import { TodoCardComponent } from './components/todo-card/todo-card.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ModalAssignComponent } from './components/modal-assign/modal-assign.component';
+import {MatListModule} from '@angular/material/list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
+import { ModalNewTodoComponent } from './components/modal-new-todo/modal-new-todo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    IfAuthenticatedDirective
+    IfAuthenticatedDirective,
+    NavUserComponent,
+    TodosComponent,
+    TodoCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatTableModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatListModule,
+    MatFormFieldModule,
+    CommonModule,
+    ModalAssignComponent,
+    ModalNewTodoComponent
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'it-IT' },
-    { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR'},
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    CurrencyPipe
-   ],
-   bootstrap: [AppComponent]
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
