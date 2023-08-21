@@ -24,6 +24,9 @@ import {MatListModule} from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { ModalNewTodoComponent } from './components/modal-new-todo/modal-new-todo.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { TodoOptionsComponent } from './components/todo-options/todo-options.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { ModalNewTodoComponent } from './components/modal-new-todo/modal-new-tod
     IfAuthenticatedDirective,
     NavUserComponent,
     TodosComponent,
-    TodoCardComponent
+    TodoCardComponent,
+    TodoOptionsComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +56,12 @@ import { ModalNewTodoComponent } from './components/modal-new-todo/modal-new-tod
     MatFormFieldModule,
     CommonModule,
     ModalAssignComponent,
-    ModalNewTodoComponent
+    ModalNewTodoComponent,
+    NgxMatTimepickerModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'}
   ],
   bootstrap: [AppComponent]
 })

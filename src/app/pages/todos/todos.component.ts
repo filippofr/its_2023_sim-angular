@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { omitBy } from 'lodash';
 import { BehaviorSubject, Subject, debounceTime, map, takeUntil } from 'rxjs';
 import { ModalNewTodoComponent, NewTodo } from 'src/app/components/modal-new-todo/modal-new-todo.component';
+import { AssignTodoClass, CheckedTodo } from 'src/app/components/todo-card/todo-card.component';
 import { Todo } from 'src/app/interfaces/todo';
 import { TodoService } from 'src/app/services/todo.service';
 
@@ -18,9 +19,7 @@ export class TodosComponent implements OnInit, OnDestroy{
   // todos$ = this.todoSrv.list(this.showCompleted$.value);
   todos: Todo[] = [];
 
-  constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private todoSrv: TodoService,
+  constructor(private todoSrv: TodoService,
               public dialog: MatDialog
   ) {}
 
@@ -33,6 +32,7 @@ export class TodosComponent implements OnInit, OnDestroy{
       debounceTime(200)
     )
     .subscribe((value) => {
+      console.log('value in todos: ' + value);
       this.refreshTodos(value);
     })
   }
@@ -50,7 +50,8 @@ export class TodosComponent implements OnInit, OnDestroy{
   }
 
   onSwitchChange($event: any){
-    this.showCompleted$.next($event.target.checked);
+    console.log('event value: ' + $event)
+    this.showCompleted$.next($event);
     console.log(this.showCompleted$.value);
   }
 
@@ -59,17 +60,28 @@ export class TodosComponent implements OnInit, OnDestroy{
     this.todoSrv.add(event)
       .subscribe( data => {
         this.refreshTodos(this.showCompleted$.value);
-      })
+      });
   }
 
-  openDialogNewTodo(): void {
-    const dialogRef = this.dialog.open(ModalNewTodoComponent, {
-      data: {},
-    });
+  assignTodo(newAssign: AssignTodoClass) {
+    this.todoSrv.assignTo(newAssign.todoId, newAssign.userId)
+      .subscribe((data) => {
+        this.refreshTodos(this.showCompleted$.value);
+      });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      this.addTodo(result);
-    });
+  checkTodo(event: CheckedTodo) {
+    console.log('value checkBox: ' + event.completed);
+    if(event.completed){
+      this.todoSrv.setCompleted(event.idTodo)
+        .subscribe( data => {
+          this.refreshTodos(this.showCompleted$.value);
+      });
+    } else {
+      this.todoSrv.setUnCompleted(event.idTodo)
+        .subscribe( data => {
+          this.refreshTodos(this.showCompleted$.value);
+      });
+    }
   }
 }

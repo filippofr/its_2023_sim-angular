@@ -1,10 +1,13 @@
 <div mat-dialog-content>
   <mat-list role="list" *ngFor="let user of users | async">
     <mat-list-item role="listitem">
-      <button mat-raised-button (click)="onUserClick(user.id)">{{user.fullName}}</button>
+      <button mat-raised-button [mat-dialog-close]="user">
+        <img class="user-icon" [src]="user.picture" alt="">
+        <span>{{user.fullName}}</span>
+      </button>
     </mat-list-item>
   </mat-list>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="onCloseClick()" cdkFocusInitial>Close</button>
+  <button mat-raised-button (click)="onCloseClick()">Close</button>
 </div>

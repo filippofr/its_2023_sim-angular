@@ -17,16 +17,24 @@
       <button mat-raised-button (click)="openDialogAssign()">Select</button>
     </ng-template>
 
-    <div class="card-text">Date: {{todo!.dueDate | date: 'dd/MM/yyyy HH:mm'}}</div>
+    <div class="card-text" *ngIf="todo.dueDate">Date: {{todo!.dueDate | date: 'dd/MM/yyyy HH:mm'}}</div>
 
     <div class="card-text" 
          [class.red]="todo.expired" 
          *ngIf="todo!.expired; else statusTodo">
-      Expired: {{todo!.expired}}
+      Expired
     </div>
     <ng-template #statusTodo>
-      <div class="card-text" [class.green]="todo.completed">Completed: {{todo!.completed}}</div>
-      <mat-checkbox>Completed</mat-checkbox>
+      <input class="form-check-input" 
+             type="checkbox"
+             id="flexSwitchCheckDefault"
+             (change)="setCheckBox($event)"
+             [checked]="todo.completed"/>
+      <label class="form-check-label" 
+             for="flexSwitchCheckDefault"
+             [class.green]="todo.completed">
+        Completed
+      </label>
     </ng-template>
     
   </div>

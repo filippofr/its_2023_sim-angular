@@ -23,75 +23,25 @@ export class TodoService {
   }
 
   setCompleted(id: string) {
-    this.http.patch<Todo>(`/api/todos/${id}/check`, {})
-      .subscribe(updated => {
-        const index = this._items$.value.findIndex(i => i.id === id);
-        const clone = structuredClone(this._items$.value);
-        clone[index] = updated;
-        this._items$.next(clone);
-      });
+    console.log(`check service, id: ${id}`);
+    return this.http.patch<Todo>(`/api/todos/${id}/check`, {});
   }
 
   setUnCompleted(id: string) {
-    this.http.patch<Todo>(`/api/todos/${id}/uncheck`, {})
-      .subscribe(updated => {
-        const index = this._items$.value.findIndex(i => i.id === id);
-        const clone = structuredClone(this._items$.value);
-        clone[index] = updated;
-        this._items$.next(clone);
-      });
+    console.log(`uncheck service, id: ${id}`);
+    return this.http.patch<Todo>(`/api/todos/${id}/uncheck`, {});
   }
 
   add(newTodo: NewTodo) {
-    // this.http.post<Todo>('/api/todos', {title})
-    //   .pipe(
-    //     catchError(err => {
-    //       console.error(err);
-    //       return of(null);
-    //     })
-    //   )
-    //   .subscribe(itemTodo => {
-    //     const items = this._items$.value;
-    //     if (itemTodo) {
-    //       const index = items.findIndex(i => i.id === itemTodo.id);
-    //       if (index !== -1) {
-    //         items[index] = itemTodo;
-    //       } else {
-    //         items.push(itemTodo);
-    //       }
-    //     }
-    //     this._items$.next(items);
-    //   });
-    console.log(newTodo);
-    return this.http.post<Todo>('/api/todos', {title: newTodo.title});
-
-    // this.apiService.addPerson(this.person)
-    // .subscribe(data => {
-    //   console.log(data)
-    //   this.refreshPeople();
-    // })  
+    console.log('newTodo: ');
+    console.log(newTodo.dueDate);
+    return this.http.post<Todo>('/api/todos', {title: newTodo.title,
+                                               assignedTo: newTodo.assignedTo?.id,
+                                               dueDate: newTodo.dueDate
+    });
   }
 
   assignTo(idTodo: string, idUser: string){
-    const body=JSON.stringify(idUser);
-    this.http.post<Todo>(`/api/todos/${idTodo}/assign`, body)
-    .pipe(
-      catchError(err => {
-        console.error(err);
-        return of(null);
-      })
-    )
-    .subscribe(itemTodo => {
-      const items = this._items$.value;
-      if (itemTodo) {
-        const index = items.findIndex(i => i.id === itemTodo.id);
-        if (index !== -1) {
-          items[index] = itemTodo;
-        } else {
-          items.push(itemTodo);
-        }
-      }
-      this._items$.next(items);
-    });
+    return this.http.post<Todo>(`/api/todos/${idTodo}/assign`, {userId: idUser});
   }
 }

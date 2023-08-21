@@ -31,14 +31,9 @@ export class ModalAssignComponent{
   constructor(
     public dialogRef: MatDialogRef<ModalAssignComponent>,
     private userSrv: TodoService,
-    @Inject(MAT_DIALOG_DATA) public data: {idTodo: string}
+    @Inject(MAT_DIALOG_DATA) public data: {userId: string}
   ) {}
 
-  onUserClick(idUser: string){
-    this.userSrv.assignTo(this.data.idTodo, idUser);
-    console.log(idUser);
-    this.dialogRef.close();
-  }
 
   onCloseClick(): void {
     this.dialogRef.close();

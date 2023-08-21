@@ -1,15 +1,15 @@
-<div class="form-check form-switch">
-  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
-    (change)="onSwitchChange($event)"/>
-  <label class="form-check-label" for="flexSwitchCheckDefault">
-    Show Completed
-  </label>
-  <button mat-raised-button (click)="openDialogNewTodo()">Create Todo</button>
-</div>
+<app-todo-options
+  (newTodoEvent)="addTodo($event)"
+  (showCompleted)="onSwitchChange($event)">
+</app-todo-options>
 
 <div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
   <div class="col mt-2 " *ngFor="let todo of todos">
-    <app-todo-card [todo]="todo" class="h-100"></app-todo-card>
+    <app-todo-card [todo]="todo" 
+                   (check)="checkTodo($event)" 
+                   (assign)="assignTodo($event)"
+                   class="h-100">
+    </app-todo-card>
   </div>
 </div>
 

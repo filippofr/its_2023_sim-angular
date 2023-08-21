@@ -3,3 +3,12 @@ ol {
     padding: 0;
     margin: 0;
 }
+li {
+    margin: 10px;
+}
+
+.user-icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
