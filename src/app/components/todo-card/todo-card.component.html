@@ -1,13 +1,13 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{todo.title}}</h5>
-    <div class="card-subtitle mb-2 text-muted">
+    <div class="card-text">
       Created by: 
       <img class="user-icon" [src]="todo.createdBy.picture" alt="">
       {{todo.createdBy.fullName}}
     </div>
     
-    <div class="card-subtitle mb-2 text-muted" *ngIf="todo!.assignedTo; else buttonAssign">
+    <div class="card-text" *ngIf="todo!.assignedTo; else buttonAssign">
       Assigned to: 
       <img class="user-icon" [src]="todo.assignedTo.picture" alt="">
       {{todo!.assignedTo!.fullName}}
@@ -25,16 +25,18 @@
       Expired
     </div>
     <ng-template #statusTodo>
-      <input class="form-check-input" 
-             type="checkbox"
-             id="flexSwitchCheckDefault"
-             (change)="setCheckBox($event)"
-             [checked]="todo.completed"/>
-      <label class="form-check-label" 
-             for="flexSwitchCheckDefault"
-             [class.green]="todo.completed">
-        Completed
-      </label>
+      <div class="card-text">
+        <input class="form-check-input" 
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+                (change)="setCheckBox($event)"
+                [checked]="todo.completed"/>
+        <label class="form-check-label" 
+                for="flexSwitchCheckDefault"
+                [class.green]="todo.completed">
+          Completed
+        </label>
+      </div>
     </ng-template>
     
   </div>

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, Time } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -12,6 +12,7 @@ import { User } from 'src/app/interfaces/user';
 import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { Subject, catchError, takeUntil, throwError } from 'rxjs';
 import { TodoService } from 'src/app/services/todo.service';
+import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface NewTodo {
   title: string;
@@ -35,19 +36,20 @@ export interface NewTodo {
     MatDatepickerModule, 
     MatNativeDateModule,
     NgxMatTimepickerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbTimepickerModule
   ]
 })
 export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodoForm = this.fb.group({
     title: ['', {validators: Validators.required}],
-    dueDate: ['']
+    dueDate: [],
+    dueTime: [{"hour": 0, "minute": 0}]
   })
 
   newTodoErr = "";
 
   user!: User;
-  dueDate!: Date;
 
   private destroyed$ = new Subject<void>();
 
@@ -85,11 +87,12 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
 
   newTodo() {
     if(this.newTodoForm.valid){
-      const { title, dueDate } = this.newTodoForm.value;
+      const { title, dueDate, dueTime } = this.newTodoForm.value;
+      const time = `${dueTime?.hour}:${dueTime?.minute}`
       this.dataNewTodo.title = title!
       this.dataNewTodo.assignedTo = this.user;
       if(dueDate) {
-        this.dataNewTodo.dueDate = this.formatDate(dueDate);
+        this.dataNewTodo.dueDate = this.formatDate(dueDate, time);
       }
 
       this.dialogRef.close(this.dataNewTodo);
@@ -100,8 +103,8 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  formatDate(date: string) {
+  formatDate(date: string, time: string) {
     const stringified = JSON.stringify(date);
-    return stringified.substring(1, 11);
+    return `${stringified.substring(1, 11)} ${time}`;
   }
 }
