@@ -1,13 +1,7 @@
-import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Todo } from 'src/app/interfaces/todo';
-import { TodoService } from 'src/app/services/todo.service';
 import { ModalAssignComponent } from '../modal-assign/modal-assign.component';
-import { User } from 'src/app/interfaces/user';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TodosComponent } from 'src/app/pages/todos/todos.component';
-import { BehaviorSubject } from 'rxjs';
 
 export interface CheckedTodo {
   idTodo: string;
@@ -36,8 +30,7 @@ export class TodoCardComponent{
   assign = new EventEmitter<AssignTodoClass>();
 
   constructor(
-    public dialog: MatDialog,
-    private todos: TodosComponent
+    public dialog: MatDialog
   ) {}
 
   openDialogAssign(): void {

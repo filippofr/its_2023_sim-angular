@@ -4,7 +4,7 @@
 </app-todo-options>
 
 <div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
-  <div class="col mt-2 " *ngFor="let todo of todos">
+  <div class="col mt-2 " *ngFor="let todo of todosList$ | async">
     <app-todo-card [todo]="todo" 
                    (check)="checkTodo($event)" 
                    (assign)="assignTodo($event)"

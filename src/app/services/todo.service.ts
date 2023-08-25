@@ -4,18 +4,31 @@ import { Todo } from '../interfaces/todo';
 import { User } from '../interfaces/user';
 import { BehaviorSubject, catchError, of } from 'rxjs';
 import { NewTodo } from '../components/modal-new-todo/modal-new-todo.component';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  private _items$ = new BehaviorSubject<Todo[]>([]);
-  items$ = this._items$.asObservable();
+  private _todos$ = new BehaviorSubject<Todo[]>([]);
+  todos$ = this._todos$.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private authSrv: AuthService
+  ) { 
+    this.authSrv.currentUser$
+    .subscribe(user => {
+      if (user) {
+        this.list();
+      } else {
+        this._todos$.next([]);
+      }
+    })
+  }
 
   list(showCompleted: Boolean = false) {
-    return this.http.get<Todo[]>(`/api/todos/?showCompleted=${showCompleted}`);
+    this.http.get<Todo[]>(`/api/todos/?showCompleted=${showCompleted}`)
+      .subscribe(todos => this._todos$.next(todos));
   }
 
   userList() {
@@ -23,25 +36,64 @@ export class TodoService {
   }
 
   setCompleted(id: string) {
-    console.log(`check service, id: ${id}`);
-    return this.http.patch<Todo>(`/api/todos/${id}/check`, {});
+    this.http.patch<Todo>(`/api/todos/${id}/check`, {})
+      .subscribe(updated => {
+        const index = this._todos$.value.findIndex(i => i.id === id);
+        const clone = structuredClone(this._todos$.value);
+        clone[index] = updated;
+        this._todos$.next(clone);
+      });
   }
 
   setUnCompleted(id: string) {
-    console.log(`uncheck service, id: ${id}`);
-    return this.http.patch<Todo>(`/api/todos/${id}/uncheck`, {});
+    this.http.patch<Todo>(`/api/todos/${id}/uncheck`, {})
+      .subscribe(updated => {
+        const index = this._todos$.value.findIndex(i => i.id === id);
+        const clone = structuredClone(this._todos$.value);
+        clone[index] = updated;
+        this._todos$.next(clone);
+      });
   }
 
   add(newTodo: NewTodo) {
     console.log('newTodo: ');
     console.log(newTodo.dueDate);
-    return this.http.post<Todo>('/api/todos', {title: newTodo.title,
-                                               assignedTo: newTodo.assignedTo?.id,
-                                               dueDate: newTodo.dueDate
-    });
+    this.http.post<Todo>('/api/todos', {title: newTodo.title,
+                                        assignedTo: newTodo.assignedTo?.id,
+                                        dueDate: newTodo.dueDate
+    })
+      .pipe(
+        catchError(err => {
+          console.error(err);
+          return of(null);
+        })
+      )
+      .subscribe(todo => {
+        const todos = this._todos$.value;
+        if (todo) {
+          todos.push(todo);
+        }
+        this._todos$.next(todos);
+      });
   }
 
   assignTo(idTodo: string, idUser: string){
-    return this.http.post<Todo>(`/api/todos/${idTodo}/assign`, {userId: idUser});
+    this.http.post<Todo>(`/api/todos/${idTodo}/assign`, {userId: idUser})
+      .pipe(
+        catchError(err => {
+          console.error(err);
+          return of(null);
+        })
+      )
+      .subscribe(todo => {
+        const todos = this._todos$.value;
+        if (todo) {
+          const index = todos.findIndex(i => i.id === todo.id);
+          if (index !== -1) {
+            todos[index] = todo;
+          }
+        }
+        this._todos$.next(todos);
+      });
   }
 }

@@ -26,7 +26,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class ModalAssignComponent{
 
-  users = this.userSrv.userList()
+  users = this.userSrv.userList();
 
   constructor(
     public dialogRef: MatDialogRef<ModalAssignComponent>,

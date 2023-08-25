@@ -16,8 +16,7 @@ import { TodoService } from 'src/app/services/todo.service';
 export class TodosComponent implements OnInit, OnDestroy{
   private showCompleted$ = new BehaviorSubject<boolean>(false)
   
-  // todos$ = this.todoSrv.list(this.showCompleted$.value);
-  todos: Todo[] = [];
+  todosList$ = this.todoSrv.todos$;
 
   constructor(private todoSrv: TodoService,
               public dialog: MatDialog
@@ -38,10 +37,7 @@ export class TodosComponent implements OnInit, OnDestroy{
   }
 
   refreshTodos(showCompleted: boolean = false){
-    this.todoSrv.list(showCompleted)
-      .subscribe(data => {
-      this.todos = data;
-     })
+    this.todoSrv.list(showCompleted);
   }
 
   ngOnDestroy(): void {
@@ -57,31 +53,20 @@ export class TodosComponent implements OnInit, OnDestroy{
 
   addTodo(event: NewTodo) {
     console.log(event);
-    this.todoSrv.add(event)
-      .subscribe( data => {
-        this.refreshTodos(this.showCompleted$.value);
-      });
+    this.todoSrv.add(event);
   }
 
   assignTodo(newAssign: AssignTodoClass) {
-    this.todoSrv.assignTo(newAssign.todoId, newAssign.userId)
-      .subscribe((data) => {
-        this.refreshTodos(this.showCompleted$.value);
-      });
+    this.todoSrv.assignTo(newAssign.todoId, newAssign.userId);
   }
 
   checkTodo(event: CheckedTodo) {
     console.log('value checkBox: ' + event.completed);
     if(event.completed){
-      this.todoSrv.setCompleted(event.idTodo)
-        .subscribe( data => {
-          this.refreshTodos(this.showCompleted$.value);
-      });
+      this.todoSrv.setCompleted(event.idTodo);
     } else {
-      this.todoSrv.setUnCompleted(event.idTodo)
-        .subscribe( data => {
-          this.refreshTodos(this.showCompleted$.value);
-      });
+      this.todoSrv.setUnCompleted(event.idTodo);
     }
+    this.refreshTodos(this.showCompleted$.value);
   }
 }

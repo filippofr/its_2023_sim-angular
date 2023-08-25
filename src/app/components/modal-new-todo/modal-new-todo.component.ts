@@ -38,13 +38,14 @@ export interface NewTodo {
     NgxMatTimepickerModule,
     ReactiveFormsModule,
     NgbTimepickerModule
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodoForm = this.fb.group({
-    title: ['', {validators: Validators.required}],
-    dueDate: [],
-    dueTime: [{"hour": 0, "minute": 0}]
+    title: this.fb.control<string|null>('', {validators: Validators.required}),
+    dueDate: this.fb.control<string|null>(''),
+    dueTime: this.fb.control<Time|null>({hours: 0, minutes: 0})
   })
 
   newTodoErr = "";
@@ -88,7 +89,7 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodo() {
     if(this.newTodoForm.valid){
       const { title, dueDate, dueTime } = this.newTodoForm.value;
-      const time = `${dueTime?.hour}:${dueTime?.minute}`
+      const time = `${dueTime?.hours}:${dueTime?.minutes}`
       this.dataNewTodo.title = title!
       this.dataNewTodo.assignedTo = this.user;
       if(dueDate) {
