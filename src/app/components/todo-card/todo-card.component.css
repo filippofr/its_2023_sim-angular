@@ -11,7 +11,24 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .card-text {
   margin-bottom: 10px;
+}
+.label{
+  font-size: 15px;
+  color: rgba(44, 44, 44, 0.644);
+  margin-bottom: 8px;
+}
+.info-user{
+  display: inline-flex;
+}
+.user-icon-container{
+  position: relative;
+  width: 30px;
+  margin-right: 7px;
 }
