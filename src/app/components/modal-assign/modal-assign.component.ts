@@ -30,8 +30,7 @@ export class ModalAssignComponent{
 
   constructor(
     public dialogRef: MatDialogRef<ModalAssignComponent>,
-    private userSrv: TodoService,
-    @Inject(MAT_DIALOG_DATA) public data: {userId: string}
+    private userSrv: TodoService
   ) {}
 
 

@@ -38,7 +38,7 @@ export class TodosComponent implements OnInit, OnDestroy{
   }
 
   refreshTodos(showCompleted: boolean){
-    console.log('showcomp: ' + showCompleted);
+    console.log('refresh, value: ' + showCompleted);
     this.todoSrv.list(showCompleted);
   }
 

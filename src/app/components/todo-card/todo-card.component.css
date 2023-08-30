@@ -6,6 +6,12 @@
   color: green;
   font-weight: bold;
 }
+.green-card{
+  background-color: rgba(5, 177, 5, 0.253);
+}
+.red-card{
+  background-color: rgba(255, 0, 0, 0.199);
+}
 
 .user-icon {
   width: 30px;
@@ -19,6 +25,10 @@
 .card-text {
   margin-bottom: 10px;
 }
+.card-text.red{
+  text-align: center;
+  font-size: 18px;
+}
 .label{
   font-size: 15px;
   color: rgba(44, 44, 44, 0.644);
@@ -31,4 +41,7 @@
   position: relative;
   width: 30px;
   margin-right: 7px;
+}
+.form-check-label{
+  margin-left: 5px;
 }

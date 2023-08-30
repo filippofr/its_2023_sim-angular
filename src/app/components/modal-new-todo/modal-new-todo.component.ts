@@ -38,8 +38,7 @@ export interface NewTodo {
     NgxMatTimepickerModule,
     ReactiveFormsModule,
     NgbTimepickerModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodoForm = this.fb.group({
@@ -51,6 +50,7 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodoErr = "";
 
   user!: User;
+  
 
   private destroyed$ = new Subject<void>();
 

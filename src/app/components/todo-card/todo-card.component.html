@@ -1,6 +1,12 @@
-<div class="card">
+<div class="card"
+     [class.red-card]="todo.expired"
+     [class.green-card]="todo.completed">
   <div class="card-body">
-    <h5 class="card-title">{{todo.title}}</h5>
+    <h5 class="card-title">
+      {{todo.title}}
+      <span class="icon-status">
+      </span>
+    </h5>
 
     <div class="row">
       <div class="col card-text">
@@ -42,11 +48,10 @@
       <div class="card-text">
         <input class="form-check-input" 
                 type="checkbox"
-                id="flexSwitchCheckDefault"
                 (change)="setCheckBox($event)"
-                [checked]="todo.completed"/>
-        <label class="form-check-label" 
-                for="flexSwitchCheckDefault"
+                [checked]="todo.completed"
+                [class.is-valid]="todo.completed"/>
+        <label class="form-check-label"
                 [class.green]="todo.completed">
           Completed
         </label>

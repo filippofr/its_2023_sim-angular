@@ -1,13 +1,20 @@
 <div mat-dialog-content>
-  <mat-list role="list" *ngFor="let user of users | async">
+  <!-- <mat-list role="list" *ngFor="let user of users | async">
     <mat-list-item role="listitem">
       <button mat-raised-button [mat-dialog-close]="user">
         <img class="user-icon" [src]="user.picture" alt="">
         <span>{{user.fullName}}</span>
       </button>
     </mat-list-item>
-  </mat-list>
+  </mat-list> -->
+  <div class="list-group list-group-flush" *ngFor="let user of users | async">
+    <a class="list-group-item list-group-item-action" [mat-dialog-close]="user">
+      <img class="user-icon" [src]="user.picture" alt="">
+      <span>{{user.fullName}}</span>
+    </a>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onCloseClick()">Close</button>
 </div>
+

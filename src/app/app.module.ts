@@ -57,12 +57,12 @@ import { TodoOptionsComponent } from './components/todo-options/todo-options.com
     CommonModule,
     ModalAssignComponent,
     ModalNewTodoComponent,
-    NgxMatTimepickerModule
+    NgxMatTimepickerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {provide: MAT_DATE_LOCALE, useValue: 'it-IT'}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
