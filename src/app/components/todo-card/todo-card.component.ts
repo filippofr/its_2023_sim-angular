@@ -36,7 +36,6 @@ export class TodoCardComponent{
   openDialogAssign(): void {
     const dialogRef = this.dialog.open(ModalAssignComponent);  
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if(result) {
         this.assign.emit({todoId: this.todo.id, userId: result.id});
       }

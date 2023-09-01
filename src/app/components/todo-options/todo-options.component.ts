@@ -9,7 +9,7 @@ import { ModalNewTodoComponent, NewTodo } from '../modal-new-todo/modal-new-todo
   templateUrl: './todo-options.component.html',
   styleUrls: ['./todo-options.component.css']
 })
-export class TodoOptionsComponent implements OnInit, OnDestroy{
+export class TodoOptionsComponent{
 
   @Output()
   showCompleted = new EventEmitter<Boolean>();
@@ -25,21 +25,6 @@ export class TodoOptionsComponent implements OnInit, OnDestroy{
     public dialog: MatDialog
   ){}
 
-  private destroyed$ = new Subject<void>();
-  ngOnInit(): void {
-    this.showCompleted$
-    .pipe(
-      takeUntil(this.destroyed$)
-    )
-    .subscribe((value) => {
-      // this.showCompleted.emit(value);
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
 
   onSwitchChange($event: any){
     this.showCompleted.emit($event.target.checked);
@@ -56,7 +41,6 @@ export class TodoOptionsComponent implements OnInit, OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        console.log(result);
         this.addTodo(result);
       }
     });

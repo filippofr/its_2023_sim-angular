@@ -39,24 +39,23 @@
 
     <div class="card-text" *ngIf="todo.dueDate">Date: {{todo!.dueDate | date: 'dd/MM/yyyy HH:mm'}}</div>
 
+    <div class="card-text">
+      <input class="form-check-input" 
+              type="checkbox"
+              (change)="setCheckBox($event)"
+              [checked]="todo.completed"
+              [class.is-valid]="todo.completed"/>
+      <label class="form-check-label"
+              [class.green]="todo.completed">
+        Completed
+      </label>
+    </div>
+
     <div class="card-text" 
          [class.red]="todo.expired" 
-         *ngIf="todo!.expired; else statusTodo">
+         *ngIf="todo!.expired">
       Expired
     </div>
-    <ng-template #statusTodo>
-      <div class="card-text">
-        <input class="form-check-input" 
-                type="checkbox"
-                (change)="setCheckBox($event)"
-                [checked]="todo.completed"
-                [class.is-valid]="todo.completed"/>
-        <label class="form-check-label"
-                [class.green]="todo.completed">
-          Completed
-        </label>
-      </div>
-    </ng-template>
     
   </div>
 </div>

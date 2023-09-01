@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, Input } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { User } from 'src/app/interfaces/user';
+import { Component } from '@angular/core';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {MatListModule} from '@angular/material/list';
-import { TodoService } from 'src/app/services/todo.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -30,7 +28,7 @@ export class ModalAssignComponent{
 
   constructor(
     public dialogRef: MatDialogRef<ModalAssignComponent>,
-    private userSrv: TodoService
+    private userSrv: UserService
   ) {}
 
 

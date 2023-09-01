@@ -12,3 +12,6 @@ li {
     height: 30px;
     border-radius: 50%;
 }
+.text-danger{
+    text-align: center;
+}

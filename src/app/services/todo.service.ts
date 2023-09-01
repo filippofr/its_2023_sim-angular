@@ -31,10 +31,6 @@ export class TodoService {
       .subscribe(todos => this._todos$.next(todos));
   }
 
-  userList() {
-    return this.http.get<User[]>(`/api/users`);
-  }
-
   setCompleted(id: string) {
     this.http.patch<Todo>(`/api/todos/${id}/check`, {})
       .subscribe(updated => {
@@ -56,8 +52,6 @@ export class TodoService {
   }
 
   add(newTodo: NewTodo) {
-    console.log('newTodo: ');
-    console.log(newTodo.dueDate);
     this.http.post<Todo>('/api/todos', {title: newTodo.title,
                                         assignedTo: newTodo.assignedTo?.id,
                                         dueDate: newTodo.dueDate
@@ -86,14 +80,14 @@ export class TodoService {
         })
       )
       .subscribe(todo => {
-        const todos = this._todos$.value;
+        const clone = structuredClone(this._todos$.value);
         if (todo) {
-          const index = todos.findIndex(i => i.id === todo.id);
+          const index = clone.findIndex(i => i.id === todo.id);
           if (index !== -1) {
-            todos[index] = todo;
+            clone[index] = todo;
           }
         }
-        this._todos$.next(todos);
+        this._todos$.next(clone);
       });
   }
 }

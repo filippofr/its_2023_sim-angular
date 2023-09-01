@@ -27,14 +27,18 @@
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+        
       </li>
       <li>
         <ngb-timepicker formControlName="dueTime"></ngb-timepicker>
       </li>
+      <div class="text-danger" *ngIf="newTodoForm.errors && newTodoForm.errors['invalidDate']">
+        Invalid date, it's the past
+      </div>
     </ol>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onCloseClick()">Close</button>
-    <button mat-button type="submit" (click)="newTodo()">Ok</button>
+    <button mat-button type="submit" (click)="newTodo()" [disabled]="!newTodoForm.valid">Ok</button>
   </div>
 </form>

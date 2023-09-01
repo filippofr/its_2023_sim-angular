@@ -1,6 +1,6 @@
-import { CommonModule, Time } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -10,14 +10,14 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ModalAssignComponent } from '../modal-assign/modal-assign.component';
 import { User } from 'src/app/interfaces/user';
 import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
-import { Subject, catchError, takeUntil, throwError } from 'rxjs';
-import { TodoService } from 'src/app/services/todo.service';
-import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
+import { NgbTimepickerModule, NgbTimeStruct  } from '@ng-bootstrap/ng-bootstrap';
+import { dateTimeValidator } from 'src/app/services/datetime-validator';
 
 export interface NewTodo {
   title: string;
   assignedTo?: User;
-  dueDate?: string;  
+  dueDate?: Date;  
 }
 
 
@@ -43,8 +43,10 @@ export interface NewTodo {
 export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodoForm = this.fb.group({
     title: this.fb.control<string|null>('', {validators: Validators.required}),
-    dueDate: this.fb.control<string|null>(''),
-    dueTime: this.fb.control<Time|null>({hours: 0, minutes: 0})
+    dueDate: this.fb.control<Date|null>(null),
+    dueTime: this.fb.control<NgbTimeStruct|null>({hour: 0, minute: 0, second: 0})
+  }, {
+    validators: [dateTimeValidator()]
   })
 
   newTodoErr = "";
@@ -79,7 +81,6 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
   openDialogAssign(): void {
     const dialogRef = this.dialog.open(ModalAssignComponent);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if(result) {
         this.user = result;
       }
@@ -89,11 +90,12 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
   newTodo() {
     if(this.newTodoForm.valid){
       const { title, dueDate, dueTime } = this.newTodoForm.value;
-      const time = `${dueTime?.hours}:${dueTime?.minutes}`
       this.dataNewTodo.title = title!
       this.dataNewTodo.assignedTo = this.user;
       if(dueDate) {
-        this.dataNewTodo.dueDate = this.formatDate(dueDate, time);
+        dueDate?.setHours(dueTime?.hour!);
+        dueDate?.setMinutes(dueTime?.minute!);
+        this.dataNewTodo.dueDate = dueDate;
       }
 
       this.dialogRef.close(this.dataNewTodo);
@@ -102,10 +104,5 @@ export class ModalNewTodoComponent implements OnInit, OnDestroy {
 
   onCloseClick(): void {
     this.dialogRef.close();
-  }
-
-  formatDate(date: string, time: string) {
-    const stringified = JSON.stringify(date);
-    return `${stringified.substring(1, 11)} ${time}`;
   }
 }
