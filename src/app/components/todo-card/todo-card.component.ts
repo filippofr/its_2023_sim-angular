@@ -4,6 +4,7 @@ import { Todo } from 'src/app/interfaces/todo';
 import { ModalAssignComponent } from '../modal-assign/modal-assign.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/interfaces/user';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 export interface CheckedTodo {
   idTodo: string;
@@ -19,11 +20,19 @@ export interface AssignTodoClass {
 @Component({
   selector: 'app-todo-card',
   templateUrl: './todo-card.component.html',
-  styleUrls: ['./todo-card.component.css']
+  styleUrls: ['./todo-card.component.css'],
+  animations: [
+    trigger('deleteTrigger', [
+      transition(':leave', [
+        animate('300ms', style({ opacity: 0 }))
+      ])
+    ]),
+  ]
 })
 export class TodoCardComponent{
 
   currentUser!: User;
+  isShown = true;
 
   @Input()
   todo!: Todo;
@@ -43,7 +52,7 @@ export class TodoCardComponent{
 
   constructor(
     public dialog: MatDialog,
-    private authSrv: AuthService
+    authSrv: AuthService
   ) {
     authSrv.currentUser$.subscribe( user => {
       if(user){
@@ -66,7 +75,13 @@ export class TodoCardComponent{
   }
 
   deleteTodo(event: any){
-    this.delete.emit(this.todo.id);
+    this.isShown = !this.isShown
   }
+
+  onDeleteAnimationEnd() {
+    if (!this.isShown) {
+      this.delete.emit(this.todo.id);
+    }
+  }  
 
 }

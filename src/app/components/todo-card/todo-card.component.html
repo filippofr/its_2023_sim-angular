@@ -1,6 +1,9 @@
 <div class="card"
      [class.red-card]="todo.expired"
-     [class.green-card]="todo.completed">
+     [class.green-card]="todo.completed"
+     @deleteTrigger
+     *ngIf="isShown"
+     (@deleteTrigger.done)="onDeleteAnimationEnd()">
      
   <div class="trash-icon" *ngIf="todo.createdBy.id == currentUser.id && statusDelete">
     <button class="trash-button" mat-button color="delete" (click)="deleteTodo($event)">
@@ -10,8 +13,6 @@
   <div class="card-body">
     <h5 class="card-title">
       {{todo.title}}
-      <span class="icon-status">
-      </span>
     </h5>
 
     <div class="row">
