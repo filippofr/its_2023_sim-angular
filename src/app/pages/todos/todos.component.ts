@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
 import { NewTodo } from 'src/app/components/modal-new-todo/modal-new-todo.component';
 import { AssignTodoClass, CheckedTodo } from 'src/app/components/todo-card/todo-card.component';
+import { User } from 'src/app/interfaces/user';
 import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
@@ -12,14 +12,13 @@ import { TodoService } from 'src/app/services/todo.service';
 })
 export class TodosComponent{
   private showCompleted = false;
+  statusDelete = false;
   
   todosList$ = this.todoSrv.todos$;
 
   constructor(private todoSrv: TodoService,
               public dialog: MatDialog
   ) {}
-
-  private destroyed$ = new Subject<void>();
 
   refreshTodos(showCompleted: boolean){
     this.todoSrv.list(showCompleted);
@@ -28,6 +27,10 @@ export class TodosComponent{
   onSwitchChange($event: any){
     this.showCompleted = $event;
     this.refreshTodos($event);
+  }
+
+  onSwitchDeleteChange($event: any){
+    this.statusDelete = $event;
   }
 
   addTodo(event: NewTodo) {
@@ -44,5 +47,9 @@ export class TodosComponent{
     } else {
       this.todoSrv.setUnCompleted(event.idTodo);
     }
+  }
+
+  deleteTodo(event: string) {
+    this.todoSrv.remove(event);
   }
 }

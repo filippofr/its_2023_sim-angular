@@ -90,4 +90,14 @@ export class TodoService {
         this._todos$.next(clone);
       });
   }
+
+  remove(id: string) {
+    this.http.delete(`/api/todos/${id}`)
+      .subscribe(_ => {
+        const clone = structuredClone(this._todos$.value);
+        const index = clone.findIndex(item => item.id === id);
+        clone.splice(index, 1);
+        this._todos$.next(clone);
+      })
+  }
 }

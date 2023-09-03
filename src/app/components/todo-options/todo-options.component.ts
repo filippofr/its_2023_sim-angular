@@ -1,7 +1,6 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Subject, debounceTime, takeUntil } from 'rxjs';
-import { TodoService } from 'src/app/services/todo.service';
+import { BehaviorSubject } from 'rxjs';
 import { ModalNewTodoComponent, NewTodo } from '../modal-new-todo/modal-new-todo.component';
 
 @Component({
@@ -17,6 +16,9 @@ export class TodoOptionsComponent{
   @Output()
   newTodoEvent = new EventEmitter<NewTodo>();
 
+  @Output()
+  deleteTodo = new EventEmitter<Boolean>();
+
 
 
   private showCompleted$ = new BehaviorSubject<boolean>(false)
@@ -28,6 +30,10 @@ export class TodoOptionsComponent{
 
   onSwitchChange($event: any){
     this.showCompleted.emit($event.target.checked);
+  }
+
+  onSwitchDeleteChange($event: any){
+    this.deleteTodo.emit($event.target.checked);
   }
 
   addTodo(value: NewTodo) {

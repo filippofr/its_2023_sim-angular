@@ -1,13 +1,16 @@
 <app-todo-options
   (newTodoEvent)="addTodo($event)"
-  (showCompleted)="onSwitchChange($event)">
+  (showCompleted)="onSwitchChange($event)"
+  (deleteTodo)="onSwitchDeleteChange($event)">
 </app-todo-options>
 
 <div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
   <div class="col mt-2 " *ngFor="let todo of todosList$ | async">
     <app-todo-card [todo]="todo"
+                   [statusDelete]="statusDelete"
                    (check)="checkTodo($event)"
                    (assign)="assignTodo($event)"
+                   (delete)="deleteTodo($event)"
                    class="h-100">
     </app-todo-card>
   </div>

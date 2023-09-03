@@ -45,3 +45,19 @@
 .form-check-label{
   margin-left: 5px;
 }
+
+.card{
+  position: relative;
+}
+.trash-icon{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.trash-button{
+  width: fit-content!important;
+  min-width: unset!important;
+}
+.mat-delete{
+  color: red;
+}

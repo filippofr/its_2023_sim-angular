@@ -1,6 +1,12 @@
 <div class="card"
      [class.red-card]="todo.expired"
      [class.green-card]="todo.completed">
+     
+  <div class="trash-icon" *ngIf="todo.createdBy.id == currentUser.id && statusDelete">
+    <button class="trash-button" mat-button color="delete" (click)="deleteTodo($event)">
+      <i class="fa-solid fa-trash-can fa-xl"></i>
+    </button>
+  </div>
   <div class="card-body">
     <h5 class="card-title">
       {{todo.title}}

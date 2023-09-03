@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Todo } from 'src/app/interfaces/todo';
 import { ModalAssignComponent } from '../modal-assign/modal-assign.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/interfaces/user';
 
 export interface CheckedTodo {
   idTodo: string;
@@ -13,6 +15,7 @@ export interface AssignTodoClass {
   userId: string;
 }
 
+
 @Component({
   selector: 'app-todo-card',
   templateUrl: './todo-card.component.html',
@@ -20,8 +23,13 @@ export interface AssignTodoClass {
 })
 export class TodoCardComponent{
 
+  currentUser!: User;
+
   @Input()
   todo!: Todo;
+
+  @Input()
+  statusDelete!: boolean;
 
   @Output()
   check = new EventEmitter<CheckedTodo>();
@@ -29,9 +37,20 @@ export class TodoCardComponent{
   @Output()
   assign = new EventEmitter<AssignTodoClass>();
 
+  @Output()
+  delete = new EventEmitter<string>();
+
+
   constructor(
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private authSrv: AuthService
+  ) {
+    authSrv.currentUser$.subscribe( user => {
+      if(user){
+        this.currentUser = user;
+      }
+    })
+  }
 
   openDialogAssign(): void {
     const dialogRef = this.dialog.open(ModalAssignComponent);  
@@ -44,6 +63,10 @@ export class TodoCardComponent{
 
   setCheckBox(event: any) {
     this.check.emit({idTodo: this.todo.id, completed: event.target.checked});
+  }
+
+  deleteTodo(event: any){
+    this.delete.emit(this.todo.id);
   }
 
 }
